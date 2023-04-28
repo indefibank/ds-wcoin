@@ -2,10 +2,10 @@ pragma solidity >=0.4.23;
 
 import "ds-test/test.sol";
 
-import "./weth.sol";
-import "./weth9.sol";
+import "./wcoin.sol";
+import "./wcoin9.sol";
 
-contract WETH9 is WETH9_ {
+contract WCOIN9 is WCOIN9_ {
     function join() public payable {
         deposit();
     }
@@ -14,57 +14,57 @@ contract WETH9 is WETH9_ {
     }
 }
 
-contract WETH9Test is DSTest, WETHEvents {
-    WETH9  weth;
+contract WCOIN9Test is DSTest, WCOINEvents {
+    WCOIN9  wcoin;
     Guy   a;
     Guy   b;
     Guy   c;
 
     function setUp() public {
-        weth  = this.newWETH();
+        wcoin = this.newWCOIN();
         a     = this.newGuy();
         b     = this.newGuy();
         c     = this.newGuy();
     }
 
-    function newWETH() public returns (WETH9) {
-        return new WETH9();
+    function newWCOIN() public returns (WCOIN9) {
+        return new WCOIN9();
     }
 
     function newGuy() public returns (Guy) {
-        return new Guy(weth);
+        return new Guy(wcoin);
     }
 
     function test_initial_state() public {
-        assert_eth_balance   (a, 0 finney);
-        assert_weth_balance  (a, 0 finney);
-        assert_eth_balance   (b, 0 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_eth_balance   (c, 0 finney);
-        assert_weth_balance  (c, 0 finney);
+        assert_coin_balance(a, 0 finney);
+        assert_wcoin_balance(a, 0 finney);
+        assert_coin_balance(b, 0 finney);
+        assert_wcoin_balance(b, 0 finney);
+        assert_coin_balance(c, 0 finney);
+        assert_wcoin_balance(c, 0 finney);
 
-        assert_weth_supply   (0 finney);
+        assert_wcoin_supply(0 finney);
     }
 
     function test_join() public {
-        // expectEventsExact    (address(weth));
+        // expectEventsExact    (address(wcoin));
 
         perform_join         (a, 3 finney);
-        assert_weth_balance  (a, 3 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_eth_balance   (a, 0 finney);
-        assert_weth_supply   (3 finney);
+        assert_wcoin_balance(a, 3 finney);
+        assert_wcoin_balance(b, 0 finney);
+        assert_coin_balance(a, 0 finney);
+        assert_wcoin_supply(3 finney);
 
         perform_join         (a, 4 finney);
-        assert_weth_balance  (a, 7 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_eth_balance   (a, 0 finney);
-        assert_weth_supply   (7 finney);
+        assert_wcoin_balance(a, 7 finney);
+        assert_wcoin_balance(b, 0 finney);
+        assert_coin_balance(a, 0 finney);
+        assert_wcoin_supply(7 finney);
 
         perform_join         (b, 5 finney);
-        assert_weth_balance  (b, 5 finney);
-        assert_weth_balance  (a, 7 finney);
-        assert_weth_supply   (12 finney);
+        assert_wcoin_balance(b, 5 finney);
+        assert_wcoin_balance(a, 7 finney);
+        assert_wcoin_supply(12 finney);
     }
 
     function testFail_exital_1() public {
@@ -84,19 +84,19 @@ contract WETH9Test is DSTest, WETHEvents {
     }
 
     function test_exit() public {
-        // expectEventsExact    (address(weth));
+        // expectEventsExact    (address(wcoin));
 
         perform_join         (a, 7 finney);
-        assert_weth_balance  (a, 7 finney);
-        assert_eth_balance   (a, 0 finney);
+        assert_wcoin_balance(a, 7 finney);
+        assert_coin_balance(a, 0 finney);
 
         perform_exit         (a, 3 finney);
-        assert_weth_balance  (a, 4 finney);
-        assert_eth_balance   (a, 3 finney);
+        assert_wcoin_balance(a, 4 finney);
+        assert_coin_balance(a, 3 finney);
 
         perform_exit         (a, 4 finney);
-        assert_weth_balance  (a, 0 finney);
-        assert_eth_balance   (a, 7 finney);
+        assert_wcoin_balance(a, 0 finney);
+        assert_coin_balance(a, 7 finney);
     }
 
     function testFail_transfer_1() public {
@@ -110,13 +110,13 @@ contract WETH9Test is DSTest, WETHEvents {
     }
 
     function test_transfer() public {
-        // expectEventsExact    (address(weth));
+        // expectEventsExact    (address(wcoin));
 
         perform_join         (a, 7 finney);
         perform_transfer     (a, 3 finney, b);
-        assert_weth_balance  (a, 4 finney);
-        assert_weth_balance  (b, 3 finney);
-        assert_weth_supply   (7 finney);
+        assert_wcoin_balance(a, 4 finney);
+        assert_wcoin_balance(b, 3 finney);
+        assert_wcoin_supply(7 finney);
     }
 
     function testFail_transferFrom_1() public {
@@ -134,39 +134,39 @@ contract WETH9Test is DSTest, WETHEvents {
 
         perform_join         (a, 7 finney);
         perform_approval     (a, 5 finney, b);
-        assert_weth_balance  (a, 7 finney);
+        assert_wcoin_balance(a, 7 finney);
         assert_allowance     (b, 5 finney, a);
-        assert_weth_supply   (7 finney);
+        assert_wcoin_supply(7 finney);
 
         perform_transfer     (b, 3 finney, a, c);
-        assert_weth_balance  (a, 4 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_weth_balance  (c, 3 finney);
+        assert_wcoin_balance(a, 4 finney);
+        assert_wcoin_balance(b, 0 finney);
+        assert_wcoin_balance(c, 3 finney);
         assert_allowance     (b, 2 finney, a);
-        assert_weth_supply   (7 finney);
+        assert_wcoin_supply(7 finney);
 
         perform_transfer     (b, 2 finney, a, c);
-        assert_weth_balance  (a, 2 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_weth_balance  (c, 5 finney);
+        assert_wcoin_balance(a, 2 finney);
+        assert_wcoin_balance(b, 0 finney);
+        assert_wcoin_balance(c, 5 finney);
         assert_allowance     (b, 0 finney, a);
-        assert_weth_supply   (7 finney);
+        assert_wcoin_supply(7 finney);
     }
 
     //------------------------------------------------------------------
     // Helper functions
     //------------------------------------------------------------------
 
-    function assert_eth_balance(Guy guy, uint balance) public {
+    function assert_coin_balance(Guy guy, uint balance) public {
         assertEq(address(guy).balance, balance);
     }
 
-    function assert_weth_balance(Guy guy, uint balance) public {
-        assertEq(weth.balanceOf(address(guy)), balance);
+    function assert_wcoin_balance(Guy guy, uint balance) public {
+        assertEq(wcoin.balanceOf(address(guy)), balance);
     }
 
-    function assert_weth_supply(uint supply) public {
-        assertEq(weth.totalSupply(), supply);
+    function assert_wcoin_supply(uint supply) public {
+        assertEq(wcoin.totalSupply(), supply);
     }
 
     function perform_join(Guy guy, uint wad) public {
@@ -196,7 +196,7 @@ contract WETH9Test is DSTest, WETHEvents {
     function assert_allowance(
         Guy guy, uint wad, Guy src
     ) public {
-        assertEq(weth.allowance(address(src), address(guy)), wad);
+        assertEq(wcoin.allowance(address(src), address(guy)), wad);
     }
 
     function perform_transfer(
@@ -208,32 +208,32 @@ contract WETH9Test is DSTest, WETHEvents {
 }
 
 contract Guy {
-    WETH9 weth;
+    WCOIN9 wcoin;
 
-    constructor(WETH9 _weth) public {
-        weth = _weth;
+    constructor(WCOIN9 _wcoin) public {
+        wcoin = _wcoin;
     }
 
     function join() payable public {
-        weth.join.value(msg.value)();
+        wcoin.join.value(msg.value)();
     }
 
     function exit(uint wad) public {
-        weth.exit(wad);
+        wcoin.exit(wad);
     }
 
     function () external payable {
     }
 
     function transfer(Guy dst, uint wad) public {
-        require(weth.transfer(address(dst), wad));
+        require(wcoin.transfer(address(dst), wad));
     }
 
     function approve(Guy guy, uint wad) public {
-        require(weth.approve(address(guy), wad));
+        require(wcoin.approve(address(guy), wad));
     }
 
     function transfer(Guy src, Guy dst, uint wad) public {
-        require(weth.transferFrom(address(src), address(dst), wad));
+        require(wcoin.transferFrom(address(src), address(dst), wad));
     }
 }

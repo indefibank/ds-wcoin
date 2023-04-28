@@ -1,12 +1,12 @@
 pragma solidity >=0.4.23;
 
-import "./weth9.sol";
+import "./wcoin9.sol";
 
-contract DSWethFactory {
+contract DSWcoinFactory {
     event LogMake(address indexed creator, address token);
 
-    function make() public returns (WETH9_ result) {
-        result = new WETH9_();
+    function make() public returns (WCOIN9_ result) {
+        result = new WCOIN9_();
         emit LogMake(msg.sender, address(result));
     }
 }
